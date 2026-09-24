@@ -723,6 +723,8 @@ function shareText(title, text) {
   $('#cpy').onclick = () => copy(text);
 }
 function download(name, content, type) {
+  let framed = true; try { framed = window.top !== window.self; } catch (e) {}
+  if (framed) { shareText(esc(name), content); return; }
   try { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], {type})); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); toast(`${name} téléchargé`); }
   catch (e) { shareText(name, content); }
 }
